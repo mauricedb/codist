@@ -65,6 +65,20 @@ export async function getTodayTasks(today: string) {
   return tasks.map((task) => toTaskListItem(task, today))
 }
 
+// Open-task counts for the view nav. Today counts overdue tasks too, as the
+// Today view lists them.
+export async function getTaskCounts(today: string) {
+  "use cache"
+  cacheLife("seconds")
+  cacheTag("tasks")
+
+  const [inboxCount, todayCount] = await Promise.all([
+    prisma.task.count({ where: { completedAt: null } }),
+    prisma.task.count({ where: { completedAt: null, dueDate: { lte: today } } }),
+  ])
+  return { inbox: inboxCount, today: todayCount }
+}
+
 export async function getInboxTasks(today: string) {
   "use cache"
   cacheLife("seconds")

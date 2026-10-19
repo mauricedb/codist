@@ -99,11 +99,11 @@ export function AddTaskForm({
   if (!isOpen) {
     return (
       <Button
-        variant="ghost"
-        className="mt-2 -ml-2.5 text-muted-foreground hover:text-primary"
+        variant="outline"
+        className="h-12 w-full justify-start gap-3 border-dashed border-input bg-transparent px-4 text-base text-muted-foreground hover:text-foreground"
         onClick={() => setIsOpen(true)}
       >
-        <PlusIcon aria-hidden className="text-primary" />
+        <PlusIcon aria-hidden className="size-4.5 text-brand" />
         Add task
       </Button>
     )
@@ -112,7 +112,7 @@ export function AddTaskForm({
   return (
     <form
       action={formAction}
-      className="mt-3 rounded-lg border p-3 focus-within:border-ring"
+      className="mt-2 rounded-xl border-[1.5px] border-foreground bg-card px-4 pt-3 pb-3.5 shadow-[0_12px_28px_-18px_rgb(50_40_30/0.35)]"
     >
       <label htmlFor={inputId} className="sr-only">
         Task name
@@ -129,29 +129,32 @@ export function AddTaskForm({
         }}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? errorId : undefined}
-        className="border-0 px-0 text-sm font-medium shadow-none focus-visible:ring-0 dark:bg-transparent"
+        className="h-auto border-0 px-0 py-1 text-[1.0625rem] font-medium shadow-none focus-visible:ring-0 md:text-[1.0625rem] dark:bg-transparent"
       />
       <input type="hidden" name="title" value={title} />
       <input type="hidden" name="dueDate" value={dueDate ?? ""} />
       {phrase && (
-        <p className="mt-1 text-xs text-muted-foreground">
-          Due date from “{text.slice(phrase.start, phrase.end)}”
+        <p className="mt-1 text-[0.8125rem] text-muted-foreground">
+          Due date from{" "}
+          <span className="rounded bg-brand-soft px-1.5 py-px text-brand-soft-foreground">
+            “{text.slice(phrase.start, phrase.end)}”
+          </span>
         </p>
       )}
       {error && (
-        <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">
+        <p id={errorId} role="alert" className="mt-1 text-[0.8125rem] text-destructive">
           {error}
         </p>
       )}
 
-      <div className="mt-3 flex items-center gap-1">
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t pt-3">
         <Popover open={isPickerOpen} onOpenChange={setIsPickerOpen}>
           <PopoverTrigger
             render={
               <Button
                 variant="outline"
-                size="sm"
                 className={cn(
+                  "h-10 border-foreground px-3",
                   dueDate && dueColor[getDueStatus(daysBetween(today, dueDate))]
                 )}
               />
@@ -168,7 +171,7 @@ export function AddTaskForm({
             )}
           </PopoverTrigger>
           <PopoverContent align="start" className="w-auto p-0">
-            <div className="flex flex-col border-b p-1">
+            <div className="flex flex-col border-b p-1.5">
               {[
                 { label: "Today", date: today },
                 { label: "Tomorrow", date: addDays(today, 1) },
@@ -177,20 +180,18 @@ export function AddTaskForm({
                 <Button
                   key={option.label}
                   variant="ghost"
-                  size="sm"
-                  className="justify-between"
+                  className="h-10 justify-between px-2.5 font-normal"
                   onClick={() => pick(option.date)}
                 >
                   {option.label}
-                  <span className="text-muted-foreground">
+                  <span className="font-mono text-xs text-muted-foreground">
                     {format(toPickerDate(option.date), "EEE d MMM")}
                   </span>
                 </Button>
               ))}
               <Button
                 variant="ghost"
-                size="sm"
-                className="justify-start"
+                className="h-10 justify-start px-2.5 font-normal"
                 onClick={() => pick(null)}
               >
                 No date
@@ -203,6 +204,13 @@ export function AddTaskForm({
               defaultMonth={toPickerDate(dueDate ?? today)}
               disabled={{ before: toPickerDate(today) }}
               onSelect={(date) => pick(date ? fromPickerDate(date) : null)}
+              className="p-3.5 [--cell-size:--spacing(8.5)]"
+              classNames={{
+                weekday:
+                  "flex-1 font-mono text-[0.6875rem] text-muted-foreground select-none",
+                today:
+                  "rounded-(--cell-radius) font-semibold ring-[1.5px] ring-foreground ring-inset",
+              }}
             />
           </PopoverContent>
         </Popover>
@@ -210,7 +218,7 @@ export function AddTaskForm({
           <Button
             type="button"
             variant="ghost"
-            size="icon-sm"
+            size="icon-lg"
             aria-label="Remove due date"
             onClick={() => setPickedDate(null)}
           >
@@ -219,10 +227,14 @@ export function AddTaskForm({
         )}
 
         <div className="ml-auto flex gap-2">
-          <Button type="button" variant="secondary" size="sm" onClick={close}>
+          <Button type="button" variant="outline" className="h-10 px-4" onClick={close}>
             Cancel
           </Button>
-          <Button type="submit" size="sm" disabled={!title || isPending}>
+          <Button
+            type="submit"
+            className="h-10 px-4 font-semibold"
+            disabled={!title || isPending}
+          >
             Add task
           </Button>
         </div>

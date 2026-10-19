@@ -1,50 +1,79 @@
 import { Suspense } from "react"
+import { format } from "date-fns"
 import { createTaskAction } from "@/features/tasks/actions"
 import { AddTaskForm } from "@/features/tasks/components/add-task-form"
+import { PageHeader } from "@/features/tasks/components/page-header"
 import { TaskList } from "@/features/tasks/components/task-list"
 import { TaskListSkeleton } from "@/features/tasks/components/task-list-skeleton"
-import { getOverdueTasks, getTodayTasks } from "@/features/tasks/queries"
+import { TaskSection } from "@/features/tasks/components/task-section"
+import { TodayEmptyState } from "@/features/tasks/components/today-empty-state"
+import { toPickerDate } from "@/features/tasks/due-date"
+import {
+  getOverdueTasks,
+  getTaskCounts,
+  getTodayTasks,
+} from "@/features/tasks/queries"
 import { getToday } from "@/features/tasks/today"
 
 export default function TodayPage() {
   return (
-    <>
-      <h1 className="mb-6 text-2xl font-bold">Today</h1>
-      <Suspense fallback={<TaskListSkeleton />}>
-        <TodayTasks />
-      </Suspense>
-    </>
+    <Suspense
+      fallback={
+        <>
+          <PageHeader title="Today" />
+          <TaskListSkeleton />
+        </>
+      }
+    >
+      <TodayTasks />
+    </Suspense>
   )
 }
 
 async function TodayTasks() {
   const today = await getToday()
-  const [overdueTasks, todayTasks] = await Promise.all([
+  const [overdueTasks, todayTasks, counts] = await Promise.all([
     getOverdueTasks(today),
     getTodayTasks(today),
+    getTaskCounts(today),
   ])
+  const date = toPickerDate(today)
+  const isClear = overdueTasks.length === 0 && todayTasks.length === 0
 
   return (
     <>
-      {overdueTasks.length > 0 && (
-        <section aria-labelledby="overdue-heading" className="mb-8">
-          <h2 id="overdue-heading" className="mb-2 text-sm font-bold">
-            Overdue
-          </h2>
-          <TaskList tasks={overdueTasks} />
-        </section>
+      <PageHeader
+        title="Today"
+        meta={`${counts.today} open · ${format(date, "EEEE d MMMM")}`}
+      />
+      {isClear ? (
+        <TodayEmptyState inboxCount={counts.inbox} />
+      ) : (
+        <>
+          {overdueTasks.length > 0 && (
+            <TaskSection
+              id="overdue"
+              title="Overdue"
+              count={overdueTasks.length}
+              tone="overdue"
+            >
+              <TaskList tasks={overdueTasks} />
+            </TaskSection>
+          )}
+          <TaskSection
+            id="today"
+            title={`Today · ${format(date, "EEE d MMM")}`}
+            count={todayTasks.length}
+          >
+            <TaskList tasks={todayTasks} />
+          </TaskSection>
+        </>
       )}
-      <section aria-labelledby="today-heading">
-        <h2 id="today-heading" className="mb-2 text-sm font-bold">
-          Today
-        </h2>
-        <TaskList tasks={todayTasks} />
-        <AddTaskForm
-          today={today}
-          defaultDueDate={today}
-          createTask={createTaskAction}
-        />
-      </section>
+      <AddTaskForm
+        today={today}
+        defaultDueDate={today}
+        createTask={createTaskAction}
+      />
     </>
   )
 }

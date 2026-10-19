@@ -1,19 +1,17 @@
 import Link from "next/link"
-import { ChevronDownIcon } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
 import { Logo } from "./logo"
 
 const navItems = [
-  { label: "Made For", href: "#features", hasMenu: true },
-  { label: "Resources", href: "#templates", hasMenu: true },
-  { label: "Pricing", href: "/pricing", hasMenu: false },
+  { label: "Features", href: "#features" },
+  { label: "Principles", href: "#principles" },
 ]
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-8">
+    <header className="border-b">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-5 md:px-8">
         <Logo />
         <nav aria-label="Main" className="flex items-center gap-1">
           {navItems.map((item) => (
@@ -22,24 +20,19 @@ export function SiteHeader() {
               href={item.href}
               className={buttonVariants({
                 variant: "ghost",
-                className: "hidden md:inline-flex",
+                className: "hidden h-10 px-3 text-[0.9375rem] sm:inline-flex",
               })}
             >
               {item.label}
-              {item.hasMenu && <ChevronDownIcon aria-hidden />}
             </Link>
           ))}
           <Link
-            href="/login"
+            href="/app/today"
             className={buttonVariants({
-              variant: "ghost",
-              className: "hidden sm:inline-flex",
+              className: "ml-2 h-10 px-4 text-[0.9375rem]",
             })}
           >
-            Log in
-          </Link>
-          <Link href="/signup" className={buttonVariants()}>
-            Start for free
+            Open app
           </Link>
         </nav>
       </div>

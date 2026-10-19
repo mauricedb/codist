@@ -1,32 +1,28 @@
 import Link from "next/link"
-import { DownloadIcon } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
-import { FiveStars } from "./rating"
 
 export function FinalCta() {
   return (
-    <section className="bg-muted/50 px-4 py-20 text-center md:px-8 lg:py-28">
-      <h2 className="mx-auto max-w-2xl text-3xl font-bold tracking-tight md:text-4xl">
-        Gain calmness and clarity with the world&apos;s most beloved
-        productivity app
-      </h2>
-      <p className="mt-4 flex flex-wrap items-center justify-center gap-1 text-sm text-muted-foreground">
-        374000+ <FiveStars /> reviews on Google Play and App Store
-      </p>
-      <div className="mt-8 flex flex-col items-center gap-3">
+    <section className="mx-auto max-w-7xl px-4 pb-24 md:px-8 lg:pb-28">
+      <div className="flex flex-wrap items-center justify-between gap-8 rounded-[1.25rem] bg-primary px-8 py-16 text-primary-foreground md:px-14 md:py-18">
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] md:text-5xl">
+            Clear your head in under a minute.
+          </h2>
+          <p className="text-primary-foreground/75">
+            Open Codist and type the first thing on your mind.
+          </p>
+        </div>
         <Link
-          href="/signup"
-          className={buttonVariants({ size: "lg", className: "px-5" })}
+          href="/app/today"
+          className={buttonVariants({
+            size: "lg",
+            className:
+              "h-12 bg-brand px-7 text-base font-semibold text-brand-foreground hover:bg-brand/85",
+          })}
         >
-          Start for free
-        </Link>
-        <Link
-          href="/downloads"
-          className={buttonVariants({ variant: "ghost", size: "sm" })}
-        >
-          <DownloadIcon aria-hidden />
-          Download apps
+          Start a list
         </Link>
       </div>
     </section>
