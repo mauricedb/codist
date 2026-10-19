@@ -21,7 +21,7 @@ Report each step with ✅, then a 5-line summary.
 - `npx prisma generate`: regenerate the Prisma client into `src/generated/prisma` (gitignored, so run it after a fresh clone or any schema change)
 - `npx prisma migrate dev --name <name>`: create and apply a migration (migrations go in `prisma/migrations`)
 
-There is no test runner set up yet.
+- `npm test`: run unit tests once with Vitest (`*.test.ts` next to the code; `@/` alias set in `vitest.config.ts`)
 
 ## Architecture
 

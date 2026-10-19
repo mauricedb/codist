@@ -1,4 +1,6 @@
 import { Suspense } from "react"
+import { createTaskAction } from "@/features/tasks/actions"
+import { AddTaskForm } from "@/features/tasks/components/add-task-form"
 import { TaskList } from "@/features/tasks/components/task-list"
 import { TaskListSkeleton } from "@/features/tasks/components/task-list-skeleton"
 import { getInboxTasks } from "@/features/tasks/queries"
@@ -17,5 +19,10 @@ export default function InboxPage() {
 
 async function InboxTasks() {
   const today = await getToday()
-  return <TaskList tasks={await getInboxTasks(today)} />
+  return (
+    <>
+      <TaskList tasks={await getInboxTasks(today)} />
+      <AddTaskForm today={today} createTask={createTaskAction} />
+    </>
+  )
 }

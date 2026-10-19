@@ -1,4 +1,6 @@
 import { Suspense } from "react"
+import { createTaskAction } from "@/features/tasks/actions"
+import { AddTaskForm } from "@/features/tasks/components/add-task-form"
 import { TaskList } from "@/features/tasks/components/task-list"
 import { TaskListSkeleton } from "@/features/tasks/components/task-list-skeleton"
 import { getOverdueTasks, getTodayTasks } from "@/features/tasks/queries"
@@ -37,6 +39,11 @@ async function TodayTasks() {
           Today
         </h2>
         <TaskList tasks={todayTasks} />
+        <AddTaskForm
+          today={today}
+          defaultDueDate={today}
+          createTask={createTaskAction}
+        />
       </section>
     </>
   )

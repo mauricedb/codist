@@ -46,3 +46,15 @@ export function formatDueLabel(dueInDays: number) {
     ? `${-dueInDays} days ago`
     : `In ${dueInDays} days`
 }
+
+// react-day-picker works with local-midnight Dates.
+export function toPickerDate(calendarDate: string) {
+  const [year, month, day] = calendarDate.split("-").map(Number)
+  return new Date(year, month - 1, day)
+}
+
+export function fromPickerDate(date: Date) {
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+  return `${date.getFullYear()}-${month}-${day}`
+}
