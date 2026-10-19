@@ -8,6 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Codist is a Todoist-style task manager built on Next.js 16 (App Router), React 19, Tailwind CSS v4, and Prisma 7 with SQLite. So far only the marketing landing page exists; `docs/images/` holds the Todoist reference screenshots it is modeled on.
 
+## Development workflow
+
+Report each step with ✅, then a 5-line summary.
+
 ## Commands
 
 - `npm run dev`: start the dev server at http://localhost:3000
