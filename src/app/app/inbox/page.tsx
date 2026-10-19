@@ -1,11 +1,21 @@
+import { Suspense } from "react"
 import { TaskList } from "@/features/tasks/components/task-list"
-import { getInboxTasks } from "@/features/tasks/mock-data"
+import { TaskListSkeleton } from "@/features/tasks/components/task-list-skeleton"
+import { getInboxTasks } from "@/features/tasks/queries"
+import { getToday } from "@/features/tasks/today"
 
 export default function InboxPage() {
   return (
     <>
       <h1 className="mb-6 text-2xl font-bold">Inbox</h1>
-      <TaskList tasks={getInboxTasks()} />
+      <Suspense fallback={<TaskListSkeleton />}>
+        <InboxTasks />
+      </Suspense>
     </>
   )
+}
+
+async function InboxTasks() {
+  const today = await getToday()
+  return <TaskList tasks={await getInboxTasks(today)} />
 }

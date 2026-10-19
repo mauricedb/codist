@@ -8,10 +8,10 @@ import {
   formatDueLabel,
   getDueStatus,
   type DueStatus,
-  type MockTask,
-} from "@/features/tasks/mock-data"
+} from "@/features/tasks/due-date"
+import type { TaskListItem } from "@/features/tasks/queries"
 
-const priorityRing: Record<MockTask["priority"], string> = {
+const priorityRing: Record<TaskListItem["priority"], string> = {
   1: "border-red-500",
   2: "border-orange-500",
   3: "border-blue-500",
@@ -24,7 +24,7 @@ const dueColor: Record<DueStatus, string> = {
   upcoming: "text-muted-foreground",
 }
 
-export function TaskRow({ task }: { task: MockTask }) {
+export function TaskRow({ task }: { task: TaskListItem }) {
   const [done, setDone] = useState(false)
   const titleId = `task-${task.id}-title`
 

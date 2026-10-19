@@ -11,3 +11,14 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  // Calendar date as "YYYY-MM-DD" in the user's time zone, not a timestamp.
+  dueDate     String?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([completedAt, dueDate])
+}
