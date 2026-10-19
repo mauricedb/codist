@@ -1,4 +1,5 @@
 import type { TaskListItem } from "@/features/tasks/queries"
+import { completeTaskAction } from "@/features/tasks/actions"
 import { TaskRow } from "@/features/tasks/components/task-row"
 
 export function TaskList({ tasks }: { tasks: TaskListItem[] }) {
@@ -9,7 +10,7 @@ export function TaskList({ tasks }: { tasks: TaskListItem[] }) {
   return (
     <ul className="divide-y border-y">
       {tasks.map((task) => (
-        <TaskRow key={task.id} task={task} />
+        <TaskRow key={task.id} task={task} completeTask={completeTaskAction} />
       ))}
     </ul>
   )
